@@ -1,0 +1,93 @@
+name: Testing
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+  RUSTFLAGS: "-D warnings"
+jobs:
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        override: true
+        components: clippy
+    - name: Cache dependencies
+      uses: Swatinem/rust-cache@v2.4.0
+    - name: Run cargo clippy
+      uses: actions-rs/cargo@v1
+      with:
+        command: clippy
+        args: --all-targets -- --deny warnings
+  fmt:
+    name: Rustfmt
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        override: true
+        components: rustfmt
+    - name: Cache dependencies
+      uses: Swatinem/rust-cache@v2.4.0
+    - name: Run cargo fmt
+      run: cargo fmt --all -- --check
+  linting:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "{{ cookiecutter.min_python_version }}"
+        cache: "pip"
+    - name: Install Dependencies
+      run: |
+        pip install -U pip
+        pip install -r requirements-dev.txt
+        pip install -e .
+        maturin build --out dist
+        pip install --no-index --find-links=dist/ {{ cookiecutter.project_slug }}
+    - name: Black check
+      run: |
+        black {{ cookiecutter.source_dir }} tests --check
+    - name: Lint with ruff
+      run: |
+        ruff check .
+    - name: mypy check
+      run: |
+        mypy .
+  testing:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [{% for version in cookiecutter.github_action_python_test_versions.split() %}{% if version[-1:] == "," %}"{{ version[:-1] }}", {% else %}"{{ version }}"{% endif %}{% endfor %}]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python {{ "${{ matrix.python-version }}" }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: {{ "${{ matrix.python-version }}" }}
+        cache: "pip"
+    - name: Install Dependencies
+      run: |
+        pip install -U pip
+        pip install -r requirements-dev.txt
+        pip install -e .
+        maturin build --out dist
+        pip install --no-index --find-links=dist/ {{ cookiecutter.project_slug }}
+    - name: Test with pytest
+      run: |
+        pytest

@@ -1,0 +1,42 @@
+@develop:
+  maturin develop
+
+@install: && develop
+  pip install -r requirements-dev.txt
+
+@lint:
+  echo cargo check
+  {% raw -%}
+  just --justfile {{justfile()}} check
+  echo cargo clippy
+  just --justfile {{justfile()}} clippy
+  echo cargo fmt
+  just --justfile {{justfile()}} fmt
+  echo ruff
+  just --justfile {{justfile()}} ruff
+  echo black
+  just --justfile {{justfile()}} black
+  echo mypy
+  just --justfile {{justfile()}} mypy
+  {%- endraw %}
+
+@check:
+  cargo check
+
+@clippy:
+  cargo clippy
+
+@fmt:
+  cargo fmt
+
+@black:
+  black {{ cookiecutter.source_dir }} tests
+
+@mypy:
+  mypy .
+
+@ruff:
+  ruff check . --fix
+
+@test:
+  pytest

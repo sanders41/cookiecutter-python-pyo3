@@ -1,0 +1,3 @@
+from __future__ import annotations
+
+def sum_as_string(a: int, b: int) -> str: ...
