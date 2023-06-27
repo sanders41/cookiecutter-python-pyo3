@@ -215,7 +215,7 @@ def test_workflow_testing(project_default, tmp_path):
 
     out_dir = tmp_path / project_default["project_slug"]
 
-    file_path = out_dir / ".github/workflows/testing.yaml"
+    file_path = out_dir / ".github/workflows/testing.yml"
     assert file_path.exists()
 
 
@@ -244,7 +244,7 @@ def test_use_dependabot(project_default, use_dependabot, expected, tmp_path):
 
     cookiecutter(str(COOKIECUTTER_ROOT), no_input=True, extra_context=project, output_dir=tmp_path)
 
-    file_path = tmp_path.joinpath(project["project_slug"]).joinpath(".github") / "dependabot.yaml"
+    file_path = tmp_path.joinpath(project["project_slug"]).joinpath(".github") / "dependabot.yml"
 
     if expected:
         assert file_path.exists()
@@ -261,7 +261,7 @@ def test_use_continuous_deployment(project_default, use_continuous_deployment, e
     cookiecutter(str(COOKIECUTTER_ROOT), no_input=True, extra_context=project, output_dir=tmp_path)
 
     file_path = tmp_path.joinpath(project["project_slug"]).joinpath(
-        ".github/workflows/pypi_publish.yaml"
+        ".github/workflows/pypi_publish.yml"
     )
 
     if expected:
@@ -278,10 +278,10 @@ def test_use_release_drafter(project_default, use_release_drafter, expected, tmp
     cookiecutter(str(COOKIECUTTER_ROOT), no_input=True, extra_context=project, output_dir=tmp_path)
 
     file_path_action = tmp_path.joinpath(project["project_slug"]).joinpath(
-        ".github/workflows/release_drafter.yaml"
+        ".github/workflows/release_drafter.yml"
     )
     file_path_action = tmp_path.joinpath(project["project_slug"]).joinpath(
-        ".github/release_draft_template.yaml"
+        ".github/release_draft_template.yml"
     )
 
     if expected:
@@ -299,8 +299,6 @@ def test_multi_os_ci(project_default, multi_os_ci, tmp_path):
 
     cookiecutter(str(COOKIECUTTER_ROOT), no_input=True, extra_context=project, output_dir=tmp_path)
 
-    file_path = tmp_path.joinpath(project["project_slug"]).joinpath(
-        ".github/workflows/testing.yaml"
-    )
+    file_path = tmp_path.joinpath(project["project_slug"]).joinpath(".github/workflows/testing.yml")
 
     assert file_path.exists()
