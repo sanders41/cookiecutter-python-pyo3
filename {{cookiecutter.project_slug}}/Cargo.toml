@@ -11,4 +11,4 @@ name = "_{{ cookiecutter.source_dir }}"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = { version = "0.19.1", features = ["extension-module", "abi3-py{{ cookiecutter.min_python_version.replace('.', '').replace('^', '') }}"] }
+pyo3 = { version = "0.19.2", features = ["extension-module", "abi3-py{{ cookiecutter.min_python_version.replace('.', '').replace('^', '') }}"] }
