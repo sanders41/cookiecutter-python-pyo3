@@ -3,6 +3,10 @@
 [![Tests Status](https://github.com/sanders41/cookiecutter-python-pyo3/workflows/Testing/badge.svg?branch=main&event=push)](https://github.com/sanders41/cookiecutter-python-pyo3/actions?query=workflow%3ATesting+branch%3Amain+event%3Apush)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/sanders41/cookiecutter-python-pyo3/main.svg)](https://results.pre-commit.ci/latest/github/sanders41/cookiecutter-python-pyo3/main)
 
+Note: This project will still work, but is not being actively updated. It is instead recommeded to
+use this [Python Project Generator](https://github.com/sanders41/python-project-generator) that
+is actively maintained and more feature rich.
+
 Generates a structure for Python packages built with Rust using [pyo3](https://github.com/PyO3/pyo3).
 [Maturin](https://github.com/PyO3/maturin) is used for builds and publishing, and GitHub Actions is
 used for continuous integration and continuous deployment. [Just](https://github.com/casey/just)
